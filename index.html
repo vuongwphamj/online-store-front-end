@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form login</title>
+    <style>
+         body{
+        background: url('https://gcs.tripi.vn/public-tripi/tripi-feed/img/474076OEk/anh-nen-4k-anime_062606240.jpg');
+        background-size: cover;
+        background-position-y: 2px;
+        font-size: 16px;
+    }
+    
+    input[type=text], input[type=password] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      border: 1px solid #fff;
+      box-sizing: border-box;
+    }
+    #wrapper{
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #form-login{
+        max-width: 400px;
+        background: rgba(0, 0, 0, 0.8);
+         flex-grow: 1;
+        padding: 30px 30px 40px;
+    }
+    .form-heading{
+        font-size: 25px;
+        color: #fff;
+        text-align: center;   
+    }
+    
+    .form-input{
+        background: transparent;
+        color: #fff;
+    }
+    .form-input::placeholder{
+        color: #eae0e0;
+    }
+    
+    .remember-forgot{  
+        font-size: 16px;
+        color:#fff;
+        display: flex;
+        justify-content: space-between;
+    }
+    .remember-forgot a{
+        color:#fff;
+        text-decoration: none;
+    }
+    .remember-forgot a:hover {
+        text-decoration: underline;
+    }
+    .form-submit{
+        background: transparent;
+        border: 1px solid #fff;
+        color: #fff;
+        width: 100%;   
+        padding: 6px; 
+    }
+    .register-link{
+        font-size: 15px;
+        color: #fff;
+        text-align: center;
+    }
+
+    </style>
+</head>
+<script >
+    function handleLogin(event) {
+    event.preventDefault(); // Ngăn chặn việc gửi form mặc định
+    const username = document.querySelector('input[type="text"]').value;
+    const password = document.querySelector('input[type="password"]').value;
+
+    // Kiểm tra giá trị đăng nhập
+    if (username === "admin" && password === "admin") {
+        alert("Đăng nhập thành công!");
+    } else {
+        alert("Tên đăng nhập hoặc mật khẩu không đúng.");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("form-login");
+    form.addEventListener("submit", handleLogin);
+});
+</script>
+<body>
+    <div id="wrapper">
+        <form id="form-login">
+            <h1 class="form-heading">Đăng nhập</h1>
+
+            <div class="form-group">
+                <input type="text" id="username" name="username" class="form-input" placeholder="Tên đăng nhập">
+            </div>
+
+            <div class="form-group">   
+                <input type="password" id="password" name="password" class="form-input" placeholder="Mật khẩu">              
+            </div>
+
+            <div class="remember-forgot">
+                <label>
+                    <input type="checkbox" id="remember" name="remember"> Remember me
+                </label>
+                <a href="#">Quên mật khẩu?</a>   
+            </div>
+            
+            <input type="submit" value="Đăng nhập" class="form-submit">
+
+            <div class="register-link">
+                <p>Tạo tài khoản mới? <a href="#">Đăng ký</a></p>    
+            </div>
+
+        </form>
+    </div>
+    <script>
+        document.getElementById('form-login').addEventListener('submit', function(event) {
+    event.preventDefault(); // Ngăn chặn form submit mặc định
+
+    // Lấy giá trị từ các input
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const remember = document.getElementById('remember').checked;
+
+    // Tạo đối tượng data để gửi đi
+    const data = {
+        username: username,
+        password: password,
+        remember: remember
+    };
+
+    
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    };
+
+    
+    fetch('https://api.example.com/login', requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Success:', data);
+            // Xử lý dữ liệu trả về từ API ở đây
+            const outputElement = document.getElementById('output');
+            if (outputElement) {
+                outputElement.textContent = JSON.stringify(data, null, 2);
+            } else {
+                console.error('Output element not found.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+
+    </script>
+</body>
+</html>
